@@ -4,6 +4,14 @@
 */
 
 (function(){
+	var camelToDash = function(str) {
+		return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2');
+	};
+	var dashToCamel = function(str) {
+		return str.replace(/\W+(.)/g, function (x, chr) {
+			return chr.toUpperCase();
+		});
+	};
 
 	var ngElementProto = Object.create(HTMLElement.prototype);
 
@@ -22,7 +30,11 @@
 				options = {
 					restrict: 'E',
 					template: function(){
-						return '<div class="'+name+'">' + $('template', that).html() + '</div>';
+
+						var template = $('template', that).clone();
+						template.addClass( camelToDash(name) );
+						return template[0].outerHTML.replace(/template/g, 'div');
+
 					},
 					replace:true,
 					scope:true
