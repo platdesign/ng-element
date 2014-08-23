@@ -1,0 +1,27 @@
+{
+  "name": "ng-element",
+  "main": "ng-element.js",
+  "version": "0.0.1",
+  "authors": [
+    "Christian Blaschke <mail@platdesign.de>"
+  ],
+  "description": "Describe Angular-Directives like Polymer-Elements",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "angular",
+    "polymer",
+    "webcomponents",
+    "components"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ]
+}
