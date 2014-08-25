@@ -1,20 +1,55 @@
-/*
-	Create Angular-Directives as Web-Components
-	Author: mail@platdesign.de
-*/
+/**
+ * @description Create Angular-Directives like Polymer-elements
+ * @author Christian Blaschke <mailplatdesign.de>
+ */
 
 (function(){
-	var camelToDash = function(str) {
-		return str.replace(/\W+/g, '-').replace(/([a-z\d])([A-Z])/g, '$1-$2');
-	};
-	var dashToCamel = function(str) {
-		return str.replace(/\W+(.)/g, function (x, chr) {
-			return chr.toUpperCase();
-		});
+
+
+
+	/**
+	 * Convert camelcased string to dash notation.
+	 * @param  {String} str
+	 * @return {String}
+	 */
+	function camel2dash(str) {
+	    return strtolower(preg_replace('/([a-zA-Z])(?=[A-Z])/', '$1-', str));
+	}
+
+
+
+	/**
+	 * Convert dashed string to camelcase notation.
+	 * @param  {String} str
+	 * @param  {String} delimiters
+	 * @return {String}
+	 */
+	var dash2camel = function (str, delimiters) {
+		var DEFAULT_REGEX = /[-_]+(.)?/g;
+
+		var toUpper = function(match, group) {
+			return group ? group.toUpperCase() : '';
+		};
+
+		return str.replace(delimiters ? new RegExp('[' + delimiters + ']+(.)', 'g') : DEFAULT_REGEX, toUpper);
 	};
 
+
+
+
+
+
+	/**
+	 * Prototype Object for ngElement
+	 * @type {Object prototype}
+	 */
 	var ngElementProto = Object.create(HTMLElement.prototype);
 
+
+		/**
+		 * Is called when a new ngElement-Object is instantiated.
+		 * @return {null}
+		 */
 		ngElementProto.createdCallback = function(){
 			var that = this,
 				attrs = this.attributes,
@@ -32,7 +67,7 @@
 					template: function(){
 
 						var template = $('template', that).clone();
-						template.addClass( camelToDash(name) );
+						template.addClass( camel2dash(name) );
 						return template[0].outerHTML.replace(/template/g, 'div');
 
 					},
@@ -48,7 +83,10 @@
 			}
 
 
-			// Create global Directive-Method for extending default ngDirective-parameters
+			/**
+			 * Global method to extend directive default options and specify the created directive.
+			 * @param {Object} opts
+			 */
 			window.Directive = function(opts) {
 				opts = opts || {};
 				angular.extend(options, opts)
@@ -61,10 +99,7 @@
 		};
 
 
-	/*
-		Register new element
-		Name: ng-element
-	 */
+	// Register a new html-element called ng-element with the ngElement prototype.
 	document.registerElement('ng-element', {
 		prototype: ngElementProto
 	});
